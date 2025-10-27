@@ -20,7 +20,7 @@
   - Enable email/password and Google OAuth in Supabase Auth settings
   - _Requirements: 5.2, 5.3, 5.4, 5.5, 5.6_
 
-- [ ] 3. Create Supabase client utilities and type definitions
+- [x] 3. Create Supabase client utilities and type definitions
 
   - Create `/lib/supabaseClient.ts` for client-side operations
   - Create `/lib/supabaseServer.ts` for server-side operations with service role key
@@ -38,7 +38,7 @@
   - Style with Tailwind CSS (gradient backgrounds, responsive layout)
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 7.2, 7.4, 7.5_
 
-- [ ] 5. Create protected dashboard layout with authentication guard
+- [x] 5. Create protected dashboard layout with authentication guard
 
   - Create `/app/dashboard/page.tsx` with authentication check
   - Implement redirect to login for unauthenticated users
