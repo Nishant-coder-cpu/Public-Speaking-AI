@@ -76,7 +76,7 @@
   - Test responsive breakpoints
   - _Requirements: 7.1, 7.3, 7.4, 7.5, 7.6_
 
-- [ ] 9. Create VideoPreview component
+- [x] 9. Create VideoPreview component
 
   - Create `/components/VideoPreview.tsx` with TypeScript props interface
   - Implement HTML5 video player with controls
@@ -85,7 +85,7 @@
   - Style with Tailwind CSS (rounded corners, shadow)
   - _Requirements: 2.7, 7.3_
 
-- [ ] 10. Create FeedbackCard component
+- [x] 10. Create FeedbackCard component
 
   - Create `/components/FeedbackCard.tsx` with TypeScript props interface
   - Display "AI Feedback" title and feedback text
@@ -95,7 +95,7 @@
   - Make component responsive for mobile and desktop
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 7.3, 7.4_
 
-- [ ] 11. Integrate VideoPreview and FeedbackCard into dashboard
+- [x] 11. Integrate VideoPreview and FeedbackCard into dashboard
 
   - Update dashboard to display VideoPreview component after successful upload
   - Update dashboard to display FeedbackCard component when feedback is available

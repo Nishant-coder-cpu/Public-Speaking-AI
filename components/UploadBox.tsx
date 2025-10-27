@@ -89,54 +89,28 @@ export default function UploadBox({
       const timestamp = Date.now();
       const uploadPath = `user_${user.id}/${timestamp}.mp4`;
 
-      // Get session for authentication
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('No active session');
+      // Simulate progress updates during upload
+      let currentProgress = 0;
+      const progressInterval = setInterval(() => {
+        currentProgress = Math.min(currentProgress + 10, 90);
+        setUploadProgress(currentProgress);
+        onUploadProgress(currentProgress);
+      }, 200);
+
+      // Upload file using Supabase SDK
+      const { data, error } = await supabase.storage
+        .from('videos')
+        .upload(uploadPath, file, {
+          cacheControl: '3600',
+          upsert: false,
+        });
+
+      // Clear progress interval
+      clearInterval(progressInterval);
+
+      if (error) {
+        throw error;
       }
-
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const uploadUrl = `${supabaseUrl}/storage/v1/object/videos/${uploadPath}`;
-
-      // Use XMLHttpRequest for progress tracking
-      await new Promise<void>((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-
-        // Track upload progress
-        xhr.upload.addEventListener('progress', (e) => {
-          if (e.lengthComputable) {
-            const percentComplete = Math.round((e.loaded / e.total) * 100);
-            setUploadProgress(percentComplete);
-            onUploadProgress(percentComplete);
-          }
-        });
-
-        // Handle successful upload
-        xhr.addEventListener('load', () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            resolve();
-          } else {
-            reject(new Error(`Upload failed with status ${xhr.status}`));
-          }
-        });
-
-        // Handle network errors
-        xhr.addEventListener('error', () => {
-          reject(new Error('Upload failed due to network error'));
-        });
-
-        // Handle abort
-        xhr.addEventListener('abort', () => {
-          reject(new Error('Upload was aborted'));
-        });
-
-        // Configure and send request
-        xhr.open('POST', uploadUrl);
-        xhr.setRequestHeader('Authorization', `Bearer ${session.access_token}`);
-        xhr.setRequestHeader('Content-Type', 'video/mp4');
-        xhr.setRequestHeader('x-upsert', 'false');
-        xhr.send(file);
-      });
 
       // Get public URL (for reference, actual access will use signed URLs)
       const { data: urlData } = supabase.storage

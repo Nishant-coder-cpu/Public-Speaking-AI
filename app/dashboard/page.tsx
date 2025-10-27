@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import UploadBox from '@/components/UploadBox';
+import VideoPreview from '@/components/VideoPreview';
+import FeedbackCard from '@/components/FeedbackCard';
 
 interface DashboardState {
   uploadedVideo: {
@@ -152,28 +154,20 @@ export default function Dashboard() {
             />
           </div>
 
-          {/* Video Preview Section - Placeholder */}
+          {/* Video Preview Section */}
           {state.uploadedVideo && (
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Video Preview
-              </h3>
-              <p className="text-gray-600">
-                Video preview will be displayed here
-              </p>
-            </div>
+            <VideoPreview
+              videoUrl={state.uploadedVideo.url}
+              videoPath={state.uploadedVideo.path}
+            />
           )}
 
-          {/* Feedback Section - Placeholder */}
+          {/* Feedback Section */}
           {state.feedback && (
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                AI Feedback
-              </h3>
-              <p className="text-gray-600">
-                Feedback will be displayed here
-              </p>
-            </div>
+            <FeedbackCard
+              feedback={state.feedback}
+              isLoading={state.isAnalyzing}
+            />
           )}
 
           {/* Error Display */}
