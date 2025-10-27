@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
+import UploadBox from '@/components/UploadBox';
 
 interface DashboardState {
   uploadedVideo: {
@@ -64,6 +65,33 @@ export default function Dashboard() {
     }
   };
 
+  const handleUploadComplete = (videoPath: string, videoUrl: string) => {
+    setState((prev) => ({
+      ...prev,
+      uploadedVideo: { path: videoPath, url: videoUrl },
+      isUploading: false,
+      uploadProgress: 100,
+      error: null,
+    }));
+  };
+
+  const handleUploadProgress = (progress: number) => {
+    setState((prev) => ({
+      ...prev,
+      uploadProgress: progress,
+      isUploading: progress < 100,
+    }));
+  };
+
+  const handleUploadError = (error: string) => {
+    setState((prev) => ({
+      ...prev,
+      error,
+      isUploading: false,
+      uploadProgress: 0,
+    }));
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -112,29 +140,16 @@ export default function Dashboard() {
             </p>
           </div>
 
-          {/* Upload Section - Placeholder for UploadBox component */}
+          {/* Upload Section */}
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               Upload Video
             </h3>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
-              <svg
-                className="mx-auto h-12 w-12 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                />
-              </svg>
-              <p className="mt-2 text-sm text-gray-600">
-                Upload functionality will be implemented in the next task
-              </p>
-            </div>
+            <UploadBox
+              onUploadComplete={handleUploadComplete}
+              onUploadProgress={handleUploadProgress}
+              onError={handleUploadError}
+            />
           </div>
 
           {/* Video Preview Section - Placeholder */}

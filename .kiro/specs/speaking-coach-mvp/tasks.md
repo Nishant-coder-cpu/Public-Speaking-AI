@@ -47,7 +47,7 @@
   - Add logout functionality
   - _Requirements: 1.3, 2.1_
 
-- [ ] 6. Build UploadBox component with drag-and-drop functionality
+- [x] 6. Build UploadBox component with drag-and-drop functionality
 
   - Create `/components/UploadBox.tsx` with TypeScript props interface
   - Implement drag-and-drop zone with visual feedback (border color changes)
@@ -57,7 +57,7 @@
   - Style with Tailwind CSS (dashed border, cloud icon, hover states)
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 7.2, 7.4_
 
-- [ ] 7. Implement video upload to Supabase Storage with progress tracking
+- [x] 7. Implement video upload to Supabase Storage with progress tracking
 
   - Integrate Supabase Storage upload in UploadBox component
   - Generate upload path: `user_{userId}/{timestamp}.mp4`
