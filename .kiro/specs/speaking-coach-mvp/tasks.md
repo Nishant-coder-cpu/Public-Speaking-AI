@@ -66,7 +66,16 @@
   - Display "Uploaded Successfully" message on completion
   - _Requirements: 2.5, 2.6, 2.7, 2.8, 7.4_
 
-- [ ] 8. Create VideoPreview component
+- [x] 8. Configure Tailwind animations and design system
+
+  - Add fade-in animation keyframes to tailwind.config.ts
+  - Configure color palette (indigo/blue gradients, success green, error red)
+  - Set up typography scale and font settings
+  - Configure spacing utilities
+  - Test responsive breakpoints
+  - _Requirements: 7.1, 7.3, 7.4, 7.5, 7.6_
+
+- [ ] 9. Create VideoPreview component
 
   - Create `/components/VideoPreview.tsx` with TypeScript props interface
   - Implement HTML5 video player with controls
@@ -75,94 +84,78 @@
   - Style with Tailwind CSS (rounded corners, shadow)
   - _Requirements: 2.7, 7.3_
 
-- [ ] 9. Integrate UploadBox and VideoPreview into dashboard
-
-  - Add UploadBox component to dashboard page
-  - Connect upload callbacks to dashboard state
-  - Display VideoPreview component after successful upload
-  - Show upload progress bar during upload
-  - Display error messages using toast notifications or inline alerts
-  - _Requirements: 2.1, 2.7, 2.8_
-
-- [ ] 10. Implement /api/analyze endpoint
-
-  - Create `/app/api/analyze/route.ts` with POST handler
-  - Parse and validate request body (userId, videoPath)
-  - Create signed URL from Supabase Storage with 10-minute expiration
-  - Implement error handling for missing fields and invalid requests
-  - Return appropriate error responses (400, 401, 500, 503)
-  - _Requirements: 3.2, 6.1, 6.2, 6.3, 6.8_
-
-- [ ] 11. Integrate AI model endpoint in /api/analyze
-
-  - Add AI model endpoint URL to environment variables
-  - Implement POST request to AI model with signed video URL
-  - Parse AI model response to extract feedback text
-  - Add error handling for AI service failures and timeouts
-  - Add retry logic or graceful degradation for AI service unavailability
-  - _Requirements: 3.4, 3.5, 6.4, 6.5_
-
-- [ ] 12. Store feedback in database from /api/analyze
-
-  - Insert feedback record into feedback_sessions table with user_id, video_path, feedback_text
-  - Handle database insertion errors
-  - Return success response with feedback text to client
-  - Verify RLS policies allow insertion
-  - _Requirements: 3.5, 3.6, 6.6, 6.7_
-
-- [ ] 13. Create FeedbackCard component
+- [ ] 10. Create FeedbackCard component
 
   - Create `/components/FeedbackCard.tsx` with TypeScript props interface
   - Display "AI Feedback" title and feedback text
   - Format feedback text with proper line breaks and readability
-  - Add fade-in animation using Tailwind CSS
+  - Add fade-in animation using Tailwind CSS (animate-fade-in class)
   - Add optional "Save" button (placeholder for future functionality)
   - Make component responsive for mobile and desktop
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 7.3, 7.4_
 
+- [ ] 11. Integrate VideoPreview and FeedbackCard into dashboard
+
+  - Update dashboard to display VideoPreview component after successful upload
+  - Update dashboard to display FeedbackCard component when feedback is available
+  - Remove placeholder sections and integrate actual components
+  - Ensure proper state management and component communication
+  - _Requirements: 2.7, 4.1, 7.3_
+
+- [ ] 12. Implement /api/analyze endpoint
+
+  - Create `/app/api/analyze/route.ts` with POST handler
+  - Parse and validate request body (userId, videoPath)
+  - Create signed URL from Supabase Storage with 10-minute expiration
+  - Implement POST request to AI model endpoint with signed video URL
+  - Parse AI model response to extract feedback text
+  - Insert feedback record into feedback_sessions table with user_id, video_path, feedback_text
+  - Return success response with feedback text to client
+  - Implement comprehensive error handling for missing fields, invalid requests, AI service failures, and database errors
+  - Return appropriate error responses (400, 401, 500, 503)
+  - _Requirements: 3.2, 3.4, 3.5, 3.6, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8_
+
+- [ ] 13. Add AI model endpoint configuration
+
+  - Add AI_MODEL_ENDPOINT to .env.local.example
+  - Document the expected AI model request/response format
+  - Add error handling for missing environment variable
+  - _Requirements: 3.4, 6.4_
+
 - [ ] 14. Integrate analysis flow in dashboard
 
-  - Add "Analyze Video" button that appears after upload
-  - Implement onClick handler to call /api/analyze endpoint
+  - Add "Analyze Video" button that appears after successful upload
+  - Implement onClick handler to call /api/analyze endpoint with userId and videoPath
   - Display loading indicator while analysis is processing
   - Update dashboard state with feedback on success
-  - Display FeedbackCard component with received feedback
   - Handle analysis errors and display error messages
+  - Disable analyze button while analysis is in progress
   - _Requirements: 3.1, 3.2, 3.6, 3.7, 3.8, 4.1_
 
-- [ ] 15. Configure Tailwind animations and design system
+- [ ] 15. Enhance error handling and user feedback
 
-  - Add fade-in animation keyframes to tailwind.config.js
-  - Configure color palette (indigo/blue gradients, success green, error red)
-  - Set up typography scale and font settings
-  - Configure spacing utilities
-  - Test responsive breakpoints
-  - _Requirements: 7.1, 7.3, 7.4, 7.5, 7.6_
-
-- [ ] 16. Implement comprehensive error handling and user feedback
-
-  - Add toast notification system or alert components
-  - Implement error messages for upload failures
-  - Implement error messages for analysis failures
+  - Improve error message display for upload failures (already partially implemented)
+  - Add error messages for analysis failures
   - Add session expiration handling with redirect to login
-  - Add network timeout handling
-  - Style error states with appropriate colors and icons
+  - Add network timeout handling for API calls
+  - Consider adding toast notification system for better UX
   - _Requirements: 2.8, 3.8, 7.4_
 
-- [ ]\* 17. Add upload history component (optional feature)
+- [ ]\* 16. Add upload history component (optional feature)
 
   - Create `/components/UploadHistory.tsx` component
   - Query last 3 feedback_sessions from database for current user
   - Display list with timestamps and video thumbnails/previews
   - Implement click handler to load selected video and feedback
   - Display empty state message when no uploads exist
+  - Integrate into dashboard layout
   - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-- [ ] 18. Deploy to Vercel and configure production environment
+- [ ] 17. Deploy to Vercel and configure production environment
   - Connect GitHub repository to Vercel
-  - Configure environment variables in Vercel dashboard
+  - Configure environment variables in Vercel dashboard (NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, AI_MODEL_ENDPOINT)
   - Set up automatic deployments on push to main branch
   - Verify Supabase connection in production
-  - Test authentication flow in production
+  - Test authentication flow in production (email/password and Google OAuth)
   - Test complete upload-analyze-feedback flow in production
   - _Requirements: All requirements (end-to-end validation)_
