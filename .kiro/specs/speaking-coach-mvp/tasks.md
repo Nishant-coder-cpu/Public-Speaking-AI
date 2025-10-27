@@ -7,6 +7,7 @@
   - Install Supabase client libraries (@supabase/supabase-js, @supabase/auth-helpers-nextjs)
   - Set up environment variables structure (.env.local.example)
   - Configure TypeScript with strict mode
+
   - _Requirements: 5.1, 7.1_
 
 - [x] 2. Set up Supabase backend infrastructure
@@ -19,7 +20,7 @@
   - Enable email/password and Google OAuth in Supabase Auth settings
   - _Requirements: 5.2, 5.3, 5.4, 5.5, 5.6_
 
-- [x] 3. Create Supabase client utilities and type definitions
+- [ ] 3. Create Supabase client utilities and type definitions
 
   - Create `/lib/supabaseClient.ts` for client-side operations
   - Create `/lib/supabaseServer.ts` for server-side operations with service role key
@@ -37,7 +38,7 @@
   - Style with Tailwind CSS (gradient backgrounds, responsive layout)
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 7.2, 7.4, 7.5_
 
-- [x] 5. Create protected dashboard layout with authentication guard
+- [ ] 5. Create protected dashboard layout with authentication guard
 
   - Create `/app/dashboard/page.tsx` with authentication check
   - Implement redirect to login for unauthenticated users
@@ -46,7 +47,7 @@
   - Add logout functionality
   - _Requirements: 1.3, 2.1_
 
-- [x] 6. Build UploadBox component with drag-and-drop functionality
+- [ ] 6. Build UploadBox component with drag-and-drop functionality
 
   - Create `/components/UploadBox.tsx` with TypeScript props interface
   - Implement drag-and-drop zone with visual feedback (border color changes)
@@ -56,7 +57,7 @@
   - Style with Tailwind CSS (dashed border, cloud icon, hover states)
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 7.2, 7.4_
 
-- [x] 7. Implement video upload to Supabase Storage with progress tracking
+- [ ] 7. Implement video upload to Supabase Storage with progress tracking
 
   - Integrate Supabase Storage upload in UploadBox component
   - Generate upload path: `user_{userId}/{timestamp}.mp4`
@@ -66,7 +67,7 @@
   - Display "Uploaded Successfully" message on completion
   - _Requirements: 2.5, 2.6, 2.7, 2.8, 7.4_
 
-- [x] 8. Configure Tailwind animations and design system
+- [ ] 8. Configure Tailwind animations and design system
 
   - Add fade-in animation keyframes to tailwind.config.ts
   - Configure color palette (indigo/blue gradients, success green, error red)
