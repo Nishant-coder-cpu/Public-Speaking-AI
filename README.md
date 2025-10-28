@@ -8,7 +8,8 @@ AI-powered public speaking feedback platform built with Next.js, Supabase, and T
 
 - Node.js 18.x or higher
 - npm or yarn
-- Supabase account
+- Supabase account (for auth and database)
+- AWS account (for S3 video storage)
 
 ### Installation
 
@@ -25,7 +26,10 @@ npm install
 cp .env.local.example .env.local
 ```
 
-4. Update `.env.local` with your Supabase credentials and AI model endpoint
+4. Update `.env.local` with your Supabase credentials, AWS S3 credentials, and AI model endpoint
+   - See `SUPABASE_SETUP_GUIDE.md` for Supabase setup
+   - See `AWS_S3_SETUP_GUIDE.md` for S3 setup
+   - See `AI_MODEL_API.md` for AI model endpoint integration details
 
 ### Development
 
@@ -56,7 +60,9 @@ npm start
 - **Framework**: Next.js 14+ with App Router
 - **Language**: TypeScript (strict mode)
 - **Styling**: Tailwind CSS
-- **Backend**: Supabase (Auth, Storage, Database)
+- **Backend**: 
+  - Supabase (Auth, Database)
+  - AWS S3 (Video Storage)
 - **Deployment**: Vercel
 
 ## Project Structure
@@ -74,6 +80,14 @@ npm start
 ## Environment Variables
 
 See `.env.local.example` for required environment variables.
+
+### AI Model Integration
+
+The application requires an external AI model endpoint for video analysis. See `AI_MODEL_API.md` for:
+- Expected request/response format
+- API contract details
+- Testing and mock endpoint setup
+- Error handling scenarios
 
 ## License
 

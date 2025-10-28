@@ -1,4 +1,4 @@
-# Implementation Plan
+x# Implementation Plan
 
 - [x] 1. Initialize Next.js project and configure dependencies
 
@@ -13,12 +13,22 @@
 - [x] 2. Set up Supabase backend infrastructure
 
   - Create Supabase project and obtain credentials
-  - Create `videos` storage bucket with private access
+  - ~~Create `videos` storage bucket with private access~~ (Migrated to AWS S3)
   - Create `feedback_sessions` table with schema (id, user_id, video_path, feedback_text, created_at)
   - Configure Row Level Security policies for feedback_sessions table
-  - Configure storage policies for videos bucket (user-specific access)
+  - ~~Configure storage policies for videos bucket (user-specific access)~~ (Using S3 IAM policies)
   - Enable email/password and Google OAuth in Supabase Auth settings
   - _Requirements: 5.2, 5.3, 5.4, 5.5, 5.6_
+
+- [x] 2b. Set up AWS S3 for video storage
+
+  - Create AWS account and S3 bucket (e.g., `speaking-coach-videos`)
+  - Configure bucket with private access (block public access)
+  - Create IAM user with S3 permissions (PutObject, GetObject for specific bucket)
+  - Generate access key and secret key
+  - Configure CORS policy for browser uploads
+  - Add AWS credentials to environment variables
+  - _Requirements: 5.2, 5.3_
 
 - [x] 3. Create Supabase client utilities and type definitions
 
@@ -57,12 +67,14 @@
   - Style with Tailwind CSS (dashed border, cloud icon, hover states)
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 7.2, 7.4_
 
-- [x] 7. Implement video upload to Supabase Storage with progress tracking
+- [x] 7. Implement video upload to AWS S3 with progress tracking
 
-  - Integrate Supabase Storage upload in UploadBox component
-  - Generate upload path: `user_{userId}/{timestamp}.mp4`
+  - Create `/app/api/upload-url/route.ts` endpoint to generate pre-signed S3 URLs
+  - Update UploadBox component to use S3 pre-signed URLs
+  - Generate S3 key: `user_{userId}/{timestamp}_{fileName}`
+  - Implement XMLHttpRequest for upload with progress tracking
   - Implement progress bar component with percentage display
-  - Handle upload completion and emit onUploadComplete event with videoPath and videoUrl
+  - Handle upload completion and emit onUploadComplete event with s3Key
   - Handle upload errors and emit onError event
   - Display "Uploaded Successfully" message on completion
   - _Requirements: 2.5, 2.6, 2.7, 2.8, 7.4_
@@ -103,27 +115,27 @@
   - Ensure proper state management and component communication
   - _Requirements: 2.7, 4.1, 7.3_
 
-- [ ] 12. Implement /api/analyze endpoint
+- [x] 12. Implement /api/analyze endpoint
 
   - Create `/app/api/analyze/route.ts` with POST handler
-  - Parse and validate request body (userId, videoPath)
-  - Create signed URL from Supabase Storage with 10-minute expiration
+  - Parse and validate request body (userId, videoPath/s3Key)
+  - Create signed URL from AWS S3 with 10-minute expiration using `generateDownloadUrl`
   - Implement POST request to AI model endpoint with signed video URL
   - Parse AI model response to extract feedback text
-  - Insert feedback record into feedback_sessions table with user_id, video_path, feedback_text
+  - Insert feedback record into feedback_sessions table with user_id, video_path (s3Key), feedback_text
   - Return success response with feedback text to client
   - Implement comprehensive error handling for missing fields, invalid requests, AI service failures, and database errors
   - Return appropriate error responses (400, 401, 500, 503)
   - _Requirements: 3.2, 3.4, 3.5, 3.6, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8_
 
-- [ ] 13. Add AI model endpoint configuration
+- [x] 13. Add AI model endpoint configuration
 
   - Add AI_MODEL_ENDPOINT to .env.local.example
   - Document the expected AI model request/response format
   - Add error handling for missing environment variable
   - _Requirements: 3.4, 6.4_
 
-- [ ] 14. Integrate analysis flow in dashboard
+- [x] 14. Integrate analysis flow in dashboard
 
   - Add "Analyze Video" button that appears after successful upload
   - Implement onClick handler to call /api/analyze endpoint with userId and videoPath

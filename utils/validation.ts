@@ -7,7 +7,7 @@ interface ValidationResult {
 
 /**
  * Validates a file for upload
- * Checks if the file is MP4 format and under 150MB
+ * Checks if the file is MP4 format and under 250MB
  */
 export const validateFile = (file: File): ValidationResult => {
   // Check file type
@@ -15,10 +15,10 @@ export const validateFile = (file: File): ValidationResult => {
     return { valid: false, error: 'Only MP4 files are supported' };
   }
 
-  // Check file size (150MB = 150 * 1024 * 1024 bytes)
-  const maxSize = 150 * 1024 * 1024;
+  // Check file size (250MB = 250 * 1024 * 1024 bytes)
+  const maxSize = 250 * 1024 * 1024;
   if (file.size > maxSize) {
-    return { valid: false, error: 'File size must be less than 150MB' };
+    return { valid: false, error: 'File size must be less than 250MB' };
   }
 
   return { valid: true };

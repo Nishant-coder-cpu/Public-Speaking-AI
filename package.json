@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/Nishant-coder-cpu/Public-Speaking-AI#readme",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.705.0",
+    "@aws-sdk/s3-request-presigner": "^3.705.0",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.76.1",
     "next": "^16.0.0",

@@ -78,51 +78,82 @@ export default function UploadBox({
     onUploadProgress(0);
 
     try {
-      // Get current user
-      const { data: { user } } = await supabase.auth.getUser();
+      // Get current user session
+      const { data: { session } } = await supabase.auth.getSession();
       
-      if (!user) {
+      if (!session) {
         throw new Error('User not authenticated');
       }
 
-      // Generate upload path: user_{userId}/{timestamp}.mp4
-      const timestamp = Date.now();
-      const uploadPath = `user_${user.id}/${timestamp}.mp4`;
+      // Step 1: Get pre-signed upload URL from our API
+      const uploadUrlResponse = await fetch('/api/upload-url', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ fileName: file.name }),
+      });
 
-      // Simulate progress updates during upload
-      let currentProgress = 0;
-      const progressInterval = setInterval(() => {
-        currentProgress = Math.min(currentProgress + 10, 90);
-        setUploadProgress(currentProgress);
-        onUploadProgress(currentProgress);
-      }, 200);
-
-      // Upload file using Supabase SDK
-      const { data, error } = await supabase.storage
-        .from('videos')
-        .upload(uploadPath, file, {
-          cacheControl: '3600',
-          upsert: false,
-        });
-
-      // Clear progress interval
-      clearInterval(progressInterval);
-
-      if (error) {
-        throw error;
+      if (!uploadUrlResponse.ok) {
+        throw new Error('Failed to get upload URL');
       }
 
-      // Get public URL (for reference, actual access will use signed URLs)
-      const { data: urlData } = supabase.storage
-        .from('videos')
-        .getPublicUrl(uploadPath);
+      const { uploadUrl, s3Key } = await uploadUrlResponse.json();
+
+      // Step 2: Upload file directly to S3 using pre-signed URL with progress tracking
+      const xhr = new XMLHttpRequest();
+
+      // Track upload progress
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+          const percentComplete = Math.round((e.loaded / e.total) * 100);
+          setUploadProgress(percentComplete);
+          onUploadProgress(percentComplete);
+        }
+      });
+
+      // Handle upload completion
+      await new Promise<void>((resolve, reject) => {
+        xhr.addEventListener('load', () => {
+          if (xhr.status === 200) {
+            resolve();
+          } else {
+            reject(new Error(`Upload failed with status ${xhr.status}`));
+          }
+        });
+
+        xhr.addEventListener('error', () => {
+          reject(new Error('Upload failed'));
+        });
+
+        xhr.open('PUT', uploadUrl);
+        xhr.setRequestHeader('Content-Type', 'video/mp4');
+        xhr.send(file);
+      });
 
       // Ensure progress is at 100%
       setUploadProgress(100);
       onUploadProgress(100);
 
-      // Notify parent component of successful upload
-      onUploadComplete(uploadPath, urlData.publicUrl);
+      // Step 3: Get a signed download URL for video preview
+      const previewUrlResponse = await fetch('/api/preview-url', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ s3Key }),
+      });
+
+      if (!previewUrlResponse.ok) {
+        throw new Error('Failed to get preview URL');
+      }
+
+      const { previewUrl } = await previewUrlResponse.json();
+
+      // Notify parent component of successful upload with preview URL
+      onUploadComplete(s3Key, previewUrl);
       
     } catch (error: any) {
       const errorMessage = error.message || 'Upload failed. Please try again.';
@@ -192,7 +223,7 @@ export default function UploadBox({
               Drag and drop your MP4 file here, or click to browse
             </p>
             <p className="mt-1 text-xs text-gray-500">
-              Maximum file size: 150MB
+              Maximum file size: 250MB
             </p>
           </>
         )}
