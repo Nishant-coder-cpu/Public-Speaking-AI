@@ -133,6 +133,9 @@ x# Implementation Plan
   - Add AI_MODEL_ENDPOINT to .env.local.example
   - Document the expected AI model request/response format
   - Add error handling for missing environment variable
+  - **UPDATE**: Integrated Google Gemini 1.5 Flash for video analysis
+  - Added GEMINI_API_KEY to environment variables
+  - Created GEMINI_SETUP.md guide
   - _Requirements: 3.4, 6.4_
 
 - [x] 14. Integrate analysis flow in dashboard

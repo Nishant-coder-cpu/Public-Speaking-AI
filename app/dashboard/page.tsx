@@ -6,6 +6,10 @@ import { supabase } from '@/lib/supabaseClient';
 import UploadBox from '@/components/UploadBox';
 import VideoPreview from '@/components/VideoPreview';
 import FeedbackCard from '@/components/FeedbackCard';
+import { FadeIn, SlideUp } from '@/components/AnimationWrappers';
+import { staggerContainer, staggerItem } from '@/lib/animations';
+import { motion } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
 
 interface DashboardState {
   uploadedVideo: {
@@ -148,32 +152,44 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-slate-300">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-slate-900/80 border-b border-white/10 shadow-lg transition-shadow duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Speaking Coach Dashboard
-              </h1>
-              {userEmail && (
-                <p className="text-sm text-gray-600 mt-1">{userEmail}</p>
-              )}
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4 min-w-0 flex-1">
+              {/* User Avatar */}
+              <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-500 flex items-center justify-center shadow-lg">
+                <span className="text-white font-semibold text-sm sm:text-base">
+                  {userEmail ? userEmail.charAt(0).toUpperCase() : 'U'}
+                </span>
+              </div>
+              
+              {/* Title and Email */}
+              <div className="min-w-0 flex-1">
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-50 truncate">
+                  Speaking Coach Dashboard
+                </h1>
+                {userEmail && (
+                  <p className="text-xs sm:text-sm text-slate-300 mt-0.5 truncate">{userEmail}</p>
+                )}
+              </div>
             </div>
+            
+            {/* Logout Button */}
             <button
               onClick={handleLogout}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+              className="flex-shrink-0 px-4 py-2 text-sm font-medium text-slate-200 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200 shadow-lg hover:shadow-blue-500/20"
             >
               Logout
             </button>
@@ -182,33 +198,72 @@ export default function Dashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <motion.div
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+          className="space-y-8"
+        >
           {/* Welcome Section */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              Welcome to Your Speaking Coach
-            </h2>
-            <p className="text-gray-600">
-              Upload a video of your speaking practice to receive AI-powered feedback on your performance.
-            </p>
-          </div>
+          <motion.div variants={staggerItem}>
+            <FadeIn delay={0.1}>
+              <div className="relative backdrop-blur-lg bg-white/5 rounded-2xl shadow-xl p-6 sm:p-8 overflow-hidden group hover:bg-white/10 transition-all duration-300">
+                {/* Gradient Border Effect */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ padding: '1px' }}>
+                  <div className="h-full w-full rounded-2xl backdrop-blur-lg bg-slate-900/95"></div>
+                </div>
+                
+                {/* Content */}
+                <div className="relative z-10">
+                  <div className="flex items-start gap-4">
+                    {/* Sparkles Icon with Glow */}
+                    <div className="flex-shrink-0">
+                      <div className="relative">
+                        <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-blue-400 drop-shadow-[0_0_12px_rgba(59,130,246,0.8)]" />
+                        <div className="absolute inset-0 blur-xl bg-blue-500/30 rounded-full"></div>
+                      </div>
+                    </div>
+                    
+                    {/* Text Content */}
+                    <div className="flex-1 min-w-0">
+                      <h2 className="text-2xl sm:text-3xl font-bold text-slate-50 mb-3 bg-gradient-to-r from-slate-50 via-blue-100 to-slate-50 bg-clip-text text-transparent">
+                        Welcome to Your Speaking Coach
+                      </h2>
+                      <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
+                        Upload a video of your speaking practice to receive AI-powered feedback on your performance.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </motion.div>
 
           {/* Upload Section */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Upload Video
-            </h3>
-            <UploadBox
-              onUploadComplete={handleUploadComplete}
-              onUploadProgress={handleUploadProgress}
-              onError={handleUploadError}
-            />
-          </div>
+          <motion.div variants={staggerItem}>
+            <SlideUp delay={0.2}>
+              <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl shadow-xl p-6 sm:p-8">
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-50 mb-6">
+                  Upload Video
+                </h3>
+                <UploadBox
+                  onUploadComplete={handleUploadComplete}
+                  onUploadProgress={handleUploadProgress}
+                  onError={handleUploadError}
+                />
+              </div>
+            </SlideUp>
+          </motion.div>
 
           {/* Video Preview Section */}
           {state.uploadedVideo && (
-            <>
+            <motion.div
+              variants={staggerItem}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+            >
               <VideoPreview
                 videoUrl={state.uploadedVideo.url}
                 videoPath={state.uploadedVideo.path}
@@ -216,84 +271,99 @@ export default function Dashboard() {
               
               {/* Analyze Video Button */}
               {!state.feedback && (
-                <div className="bg-white rounded-lg shadow p-6">
-                  <div className="text-center">
-                    <button
-                      onClick={handleAnalyzeVideo}
-                      disabled={state.isAnalyzing}
-                      className={`px-6 py-3 text-white font-medium rounded-md transition-colors ${
-                        state.isAnalyzing
-                          ? 'bg-indigo-400 cursor-not-allowed'
-                          : 'bg-indigo-600 hover:bg-indigo-700'
-                      }`}
-                    >
-                      {state.isAnalyzing ? (
-                        <span className="flex items-center justify-center">
-                          <svg
-                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          Analyzing...
-                        </span>
-                      ) : (
-                        'Analyze Video'
+                <FadeIn delay={0.1}>
+                  <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl shadow-xl p-6 sm:p-8 mt-8">
+                    <div className="text-center">
+                      <button
+                        onClick={handleAnalyzeVideo}
+                        disabled={state.isAnalyzing}
+                        className={`px-8 py-3 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg ${
+                          state.isAnalyzing
+                            ? 'bg-gradient-to-r from-blue-400 to-purple-400 cursor-not-allowed opacity-70'
+                            : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]'
+                        }`}
+                      >
+                        {state.isAnalyzing ? (
+                          <span className="flex items-center justify-center">
+                            <svg
+                              className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              ></circle>
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                              ></path>
+                            </svg>
+                            Analyzing...
+                          </span>
+                        ) : (
+                          'Analyze Video'
+                        )}
+                      </button>
+                      {state.isAnalyzing && (
+                        <p className="mt-4 text-sm text-slate-400">
+                          Please wait while we analyze your video. This may take a moment.
+                        </p>
                       )}
-                    </button>
-                    {state.isAnalyzing && (
-                      <p className="mt-3 text-sm text-gray-600">
-                        Please wait while we analyze your video. This may take a moment.
-                      </p>
-                    )}
+                    </div>
                   </div>
-                </div>
+                </FadeIn>
               )}
-            </>
+            </motion.div>
           )}
 
           {/* Feedback Section */}
           {state.feedback && (
-            <FeedbackCard
-              feedback={state.feedback}
-              isLoading={state.isAnalyzing}
-            />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+            >
+              <FeedbackCard
+                feedback={state.feedback}
+                isLoading={state.isAnalyzing}
+              />
+            </motion.div>
           )}
 
           {/* Error Display */}
           {state.error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-              <div className="flex">
-                <svg
-                  className="h-5 w-5 text-red-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <p className="ml-3 text-sm text-red-700">{state.error}</p>
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="backdrop-blur-lg bg-red-500/10 border border-red-500/50 rounded-2xl p-4 sm:p-6 shadow-lg">
+                <div className="flex items-start gap-3">
+                  <svg
+                    className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <p className="text-sm text-red-200 flex-1">{state.error}</p>
+                </div>
               </div>
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       </main>
     </div>
   );

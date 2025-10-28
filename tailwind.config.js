@@ -7,6 +7,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        slate: {
+          850: '#1a2332',
+        },
         primary: {
           50: '#eef2ff',
           100: '#e0e7ff',
@@ -57,16 +60,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: [
-          'system-ui',
-          '-apple-system',
-          'BlinkMacSystemFont',
-          '"Segoe UI"',
-          'Roboto',
-          '"Helvetica Neue"',
-          'Arial',
-          'sans-serif',
-        ],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Poppins', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         xs: ['0.75rem', { lineHeight: '1rem' }],
@@ -80,12 +75,24 @@ module.exports = {
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
+        'blob': 'blob 7s infinite',
+        'shimmer': 'shimmer 2s linear infinite',
         spin: 'spin 1s linear infinite',
       },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        blob: {
+          '0%': { transform: 'translate(0px, 0px) scale(1)' },
+          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+          '100%': { transform: 'translate(0px, 0px) scale(1)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
         },
         spin: {
           '0%': { transform: 'rotate(0deg)' },
@@ -98,6 +105,9 @@ module.exports = {
         100: '25rem',
         112: '28rem',
         128: '32rem',
+      },
+      backdropBlur: {
+        xs: '2px',
       },
     },
   },

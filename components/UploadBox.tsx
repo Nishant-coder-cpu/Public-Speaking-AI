@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useRef, DragEvent, ChangeEvent } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Upload, CheckCircle2, AlertCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 import { validateFile } from '@/utils/validation';
 
@@ -19,6 +21,7 @@ export default function UploadBox({
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
@@ -57,8 +60,9 @@ export default function UploadBox({
   };
 
   const handleFile = async (file: File) => {
-    // Clear previous errors
+    // Clear previous errors and success state
     setValidationError(null);
+    setUploadSuccess(false);
 
     // Validate file
     const validation = validateFile(file);
@@ -152,6 +156,9 @@ export default function UploadBox({
 
       const { previewUrl } = await previewUrlResponse.json();
 
+      // Set success state
+      setUploadSuccess(true);
+
       // Notify parent component of successful upload with preview URL
       onUploadComplete(s3Key, previewUrl);
       
@@ -167,65 +174,229 @@ export default function UploadBox({
   };
 
   const handleClick = () => {
-    if (!isUploading) {
+    if (!isUploading && !uploadSuccess) {
       fileInputRef.current?.click();
     }
   };
 
+  // Determine the current state for styling
+  const getContainerClasses = () => {
+    const baseClasses = 'backdrop-blur-lg border-2 border-dashed rounded-3xl p-12 text-center transition-all duration-300';
+    
+    if (validationError) {
+      return `${baseClasses} bg-red-500/5 border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-shake`;
+    }
+    
+    if (uploadSuccess) {
+      return `${baseClasses} bg-green-500/5 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.3)]`;
+    }
+    
+    if (isUploading) {
+      return `${baseClasses} bg-white/5 border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.2)] cursor-not-allowed`;
+    }
+    
+    if (isDragging) {
+      return `${baseClasses} bg-white/10 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.3)] scale-[1.02]`;
+    }
+    
+    return `${baseClasses} bg-white/5 border-white/20 hover:border-blue-500/50 hover:bg-white/10 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] cursor-pointer`;
+  };
+
   return (
     <div className="w-full">
-      <div
-        className={`
-          border-2 border-dashed rounded-lg p-12 text-center
-          transition-colors cursor-pointer
-          ${isDragging 
-            ? 'border-primary-500 bg-primary-50' 
-            : 'border-gray-300 hover:border-primary-400'
-          }
-          ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}
-        `}
+      <motion.div
+        className={getContainerClasses()}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         onClick={handleClick}
+        animate={{
+          scale: isDragging ? 1.02 : 1,
+        }}
+        transition={{ duration: 0.2 }}
       >
-        {/* Cloud Icon */}
-        <svg
-          className="mx-auto h-12 w-12 text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-          />
-        </svg>
+        {/* Icon with gradient styling - only show when not uploading */}
+        {!isUploading && (
+          <motion.div
+            animate={{
+              scale: isDragging ? 1.1 : 1,
+              rotate: isDragging ? 5 : 0,
+            }}
+            transition={{ duration: 0.2 }}
+          >
+            {uploadSuccess ? (
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              >
+                <CheckCircle2 className="w-16 h-16 mx-auto text-green-400" />
+              </motion.div>
+            ) : validationError ? (
+              <AlertCircle className="w-16 h-16 mx-auto text-red-400" />
+            ) : (
+              <div className="relative inline-block">
+                <Upload 
+                  className="w-16 h-16 mx-auto text-blue-400"
+                />
+                <div className="absolute inset-0 w-16 h-16 mx-auto bg-blue-400/20 blur-xl rounded-full"></div>
+              </div>
+            )}
+          </motion.div>
+        )}
 
         {isUploading ? (
-          <div className="mt-4">
-            <p className="text-sm text-gray-600 mb-2">Uploading...</p>
-            <div className="w-full bg-gray-200 rounded-full h-2 max-w-md mx-auto">
-              <div
-                className="bg-primary-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${uploadProgress}%` }}
+          <div className="flex flex-col items-center justify-center py-4">
+            {/* Animated upload icon with pulsing rings */}
+            <div className="relative w-24 h-24 mx-auto mb-6">
+              {/* Outer pulsing ring */}
+              <motion.div
+                className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/30 to-purple-500/30"
+                animate={{
+                  scale: [1, 1.3, 1],
+                  opacity: [0.5, 0, 0.5],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
               />
+              
+              {/* Middle pulsing ring */}
+              <motion.div
+                className="absolute inset-2 rounded-full bg-gradient-to-r from-blue-500/40 to-purple-500/40"
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.6, 0, 0.6],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: 0.3,
+                }}
+              />
+              
+              {/* Inner circle with upload icon */}
+              <motion.div
+                className="absolute inset-4 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg"
+                animate={{
+                  rotate: [0, 360],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+              >
+                <Upload className="w-8 h-8 text-white" />
+              </motion.div>
+              
+              {/* Floating particles */}
+              {[...Array(3)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 rounded-full bg-blue-400"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                  }}
+                  animate={{
+                    x: [0, Math.cos((i * 120 * Math.PI) / 180) * 40],
+                    y: [0, Math.sin((i * 120 * Math.PI) / 180) * 40],
+                    opacity: [1, 0],
+                    scale: [1, 0.5],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: 'easeOut',
+                    delay: i * 0.2,
+                  }}
+                />
+              ))}
             </div>
-            <p className="text-xs text-gray-500 mt-2">{uploadProgress}%</p>
+            
+            <motion.p
+              className="text-sm text-slate-300 mb-4"
+              animate={{
+                opacity: [1, 0.6, 1],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            >
+              Uploading your video...
+            </motion.p>
+            
+            {/* Animated gradient progress bar with shimmer */}
+            <div className="w-full bg-slate-800/50 rounded-full h-3 max-w-md mx-auto overflow-hidden mb-3">
+              <motion.div
+                className="h-3 rounded-full relative"
+                style={{
+                  width: `${uploadProgress}%`,
+                  background: 'linear-gradient(90deg, #3B82F6, #A855F7, #06B6D4)',
+                  backgroundSize: '200% 100%',
+                }}
+                animate={{
+                  backgroundPosition: ['0% 0%', '200% 0%'],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+              >
+                {/* Shimmer overlay */}
+                <div 
+                  className="absolute inset-0 opacity-50"
+                  style={{
+                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                    backgroundSize: '200% 100%',
+                    animation: 'shimmer 2s linear infinite',
+                  }}
+                />
+              </motion.div>
+            </div>
+            
+            <p className="text-xs text-slate-400 font-medium">{uploadProgress}%</p>
           </div>
+        ) : uploadSuccess ? (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mt-4"
+          >
+            <p className="text-sm text-green-400 font-medium">Upload Complete!</p>
+            <p className="text-xs text-slate-400 mt-1">Your video is ready for analysis</p>
+          </motion.div>
+        ) : validationError ? (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4"
+          >
+            <p className="text-sm text-red-400 font-medium">Upload Failed</p>
+            <p className="text-xs text-slate-400 mt-1">Click to try again</p>
+          </motion.div>
         ) : (
-          <>
-            <p className="mt-2 text-sm text-gray-600">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1 }}
+          >
+            <p className="mt-4 text-sm text-slate-300">
               Drag and drop your MP4 file here, or click to browse
             </p>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-2 text-xs text-slate-500">
               Maximum file size: 250MB
             </p>
-          </>
+          </motion.div>
         )}
 
         {/* Hidden file input */}
@@ -235,23 +406,28 @@ export default function UploadBox({
           accept="video/mp4"
           onChange={handleFileInputChange}
           className="hidden"
-          disabled={isUploading}
+          disabled={isUploading || uploadSuccess}
         />
-      </div>
+      </motion.div>
 
-      {/* Validation Error Message */}
-      {validationError && (
-        <div className="mt-4 p-3 bg-error-50 border border-error-200 rounded-md">
-          <p className="text-sm text-error-600">{validationError}</p>
-        </div>
-      )}
-
-      {/* Success Message */}
-      {uploadProgress === 100 && !isUploading && !validationError && (
-        <div className="mt-4 p-3 bg-success-50 border border-success-200 rounded-md">
-          <p className="text-sm text-success-600">Uploaded Successfully</p>
-        </div>
-      )}
+      {/* Error Message with animation */}
+      <AnimatePresence>
+        {validationError && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="mt-4 backdrop-blur-lg bg-red-500/10 border border-red-500/50 rounded-2xl p-4 flex items-start gap-3"
+          >
+            <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm text-red-300 font-medium">Error</p>
+              <p className="text-sm text-red-200/80 mt-1">{validationError}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
