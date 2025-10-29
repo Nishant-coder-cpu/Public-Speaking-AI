@@ -1,0 +1,14 @@
+{
+  "CORSRules": [
+    {
+      "AllowedHeaders": ["*"],
+      "AllowedMethods": ["PUT", "POST", "GET", "HEAD"],
+      "AllowedOrigins": [
+        "http://localhost:3000",
+        "https://ora-speaker.vercel.app"
+      ],
+      "ExposeHeaders": ["ETag", "x-amz-server-side-encryption", "x-amz-request-id", "x-amz-id-2"],
+      "MaxAgeSeconds": 3000
+    }
+  ]
+}
