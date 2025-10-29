@@ -1,0 +1,273 @@
+{
+    "overall_speaking_quality": "good",
+    "overall_confidence_scores": {
+        "bad": 0.21433678269386292,
+        "good": 0.5728999972343445,
+        "normal": 0.2127632200717926
+    },
+    "overall_transcript": "Good evening everyone. Today I want to talk about something that almost all of us struggle with. The gap between what we want to do and what we actually do. That gap is usually filled with one missing ingredient, consistency. Most people wait for motivation to start. They want a good mood, a good environment, a perfect day. And only then they begin. But the truth is, motivation is temporary. It's like a spark, bright for a moment and then it's gone. If your success depends on motivation, you will restart your life again and again and again, but never build anything solid. Consistency is different. Consistency is boring, slow, invisible. And that is why it is powerful. When you study, even on the days when you don't want to, it's what really makes the difference. When you go to the gym, even on the days your mind says not to read. When you show up again and again and again, without drama, then you're building identity, discipline and momentum.",
+    "overall_metrics": {
+        "duration_sec": 72.77,
+        "average_wpm": 140.17,
+        "total_fillers": 2,
+        "average_pitch": 215.86,
+        "average_energy": 0.283
+    },
+    "segments": [
+        {
+            "start": 0.0,
+            "end": 5.0,
+            "text": "Good evening everyone. Today I want to talk about something that almost all of us struggle with.",
+            "wpm": 204.0,
+            "fillers": 0,
+            "pitch_mean": 199.84,
+            "pitch_std": 20.33,
+            "energy_mean": 0.36500000953674316,
+            "energy_std": 0.28600001335144043,
+            "speaking_quality": "normal",
+            "quality_confidence": {
+                "bad": 0.4065668284893036,
+                "good": 0.0016892899293452501,
+                "normal": 0.5917438864707947
+            }
+        },
+        {
+            "start": 5.0,
+            "end": 10.0,
+            "text": "",
+            "wpm": 0.0,
+            "fillers": 0,
+            "pitch_mean": 212.92,
+            "pitch_std": 39.19,
+            "energy_mean": 0.3149999976158142,
+            "energy_std": 0.26499998569488525,
+            "speaking_quality": "normal",
+            "quality_confidence": {
+                "bad": 0.23136349022388458,
+                "good": 0.2673541009426117,
+                "normal": 0.5012823939323425
+            }
+        },
+        {
+            "start": 10.0,
+            "end": 15.0,
+            "text": "The gap between what we want to do and what we actually do. That gap is usually filled with one missing ingredient, consistency.",
+            "wpm": 276.0,
+            "fillers": 1,
+            "pitch_mean": 202.02,
+            "pitch_std": 56.01,
+            "energy_mean": 0.21799999475479126,
+            "energy_std": 0.23800000548362732,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.08818435668945312,
+                "good": 0.7768040895462036,
+                "normal": 0.13501156866550446
+            }
+        },
+        {
+            "start": 15.0,
+            "end": 20.0,
+            "text": "",
+            "wpm": 0.0,
+            "fillers": 0,
+            "pitch_mean": 211.85,
+            "pitch_std": 60.23,
+            "energy_mean": 0.3400000035762787,
+            "energy_std": 0.3269999921321869,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.1985360085964203,
+                "good": 0.5248278975486755,
+                "normal": 0.2766360938549042
+            }
+        },
+        {
+            "start": 20.0,
+            "end": 25.0,
+            "text": "Most people wait for motivation to start. They want a good mood, a good environment, a perfect day. And only then they begin.",
+            "wpm": 276.0,
+            "fillers": 0,
+            "pitch_mean": 226.68,
+            "pitch_std": 38.64,
+            "energy_mean": 0.33500000834465027,
+            "energy_std": 0.24400000274181366,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.06114565208554268,
+                "good": 0.787818968296051,
+                "normal": 0.15103542804718018
+            }
+        },
+        {
+            "start": 25.0,
+            "end": 30.0,
+            "text": "But the truth is, motivation is temporary. It's like a spark, bright for a moment and then it's gone.",
+            "wpm": 228.0,
+            "fillers": 1,
+            "pitch_mean": 203.33,
+            "pitch_std": 54.83,
+            "energy_mean": 0.23899999260902405,
+            "energy_std": 0.25999999046325684,
+            "speaking_quality": "normal",
+            "quality_confidence": {
+                "bad": 0.11412558704614639,
+                "good": 0.3602598011493683,
+                "normal": 0.5256146788597107
+            }
+        },
+        {
+            "start": 30.0,
+            "end": 35.0,
+            "text": "",
+            "wpm": 0.0,
+            "fillers": 0,
+            "pitch_mean": 216.7,
+            "pitch_std": 39.82,
+            "energy_mean": 0.20900000631809235,
+            "energy_std": 0.26100000739097595,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.04384598135948181,
+                "good": 0.6742663383483887,
+                "normal": 0.2818877100944519
+            }
+        },
+        {
+            "start": 35.0,
+            "end": 40.0,
+            "text": "If your success depends on motivation, you will restart your life again and again and again, but never build anything solid.",
+            "wpm": 252.0,
+            "fillers": 0,
+            "pitch_mean": 252.84,
+            "pitch_std": 50.62,
+            "energy_mean": 0.38100001215934753,
+            "energy_std": 0.2919999957084656,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.024635348469018936,
+                "good": 0.9411960244178772,
+                "normal": 0.03416867554187775
+            }
+        },
+        {
+            "start": 40.0,
+            "end": 45.0,
+            "text": "",
+            "wpm": 0.0,
+            "fillers": 0,
+            "pitch_mean": 222.92,
+            "pitch_std": 52.59,
+            "energy_mean": 0.29499998688697815,
+            "energy_std": 0.23399999737739563,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.02256009727716446,
+                "good": 0.8460073471069336,
+                "normal": 0.13143259286880493
+            }
+        },
+        {
+            "start": 45.0,
+            "end": 50.0,
+            "text": "Consistency is different. Consistency is boring, slow, invisible. And that is why it is powerful.",
+            "wpm": 180.0,
+            "fillers": 0,
+            "pitch_mean": 209.84,
+            "pitch_std": 69.12,
+            "energy_mean": 0.21899999678134918,
+            "energy_std": 0.26100000739097595,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.05191415175795555,
+                "good": 0.5752223134040833,
+                "normal": 0.3728635609149933
+            }
+        },
+        {
+            "start": 50.0,
+            "end": 55.0,
+            "text": "",
+            "wpm": 0.0,
+            "fillers": 0,
+            "pitch_mean": 222.07,
+            "pitch_std": 74.34,
+            "energy_mean": 0.28600001335144043,
+            "energy_std": 0.24300000071525574,
+            "speaking_quality": "normal",
+            "quality_confidence": {
+                "bad": 0.09160281717777252,
+                "good": 0.3644754886627197,
+                "normal": 0.543921709060669
+            }
+        },
+        {
+            "start": 55.0,
+            "end": 60.0,
+            "text": "When you study, even on the days when you don't want to, it's what really makes the difference.",
+            "wpm": 216.0,
+            "fillers": 0,
+            "pitch_mean": 216.22,
+            "pitch_std": 39.73,
+            "energy_mean": 0.24400000274181366,
+            "energy_std": 0.23899999260902405,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.032671377062797546,
+                "good": 0.8225539922714233,
+                "normal": 0.14477458596229553
+            }
+        },
+        {
+            "start": 60.0,
+            "end": 65.0,
+            "text": "",
+            "wpm": 0.0,
+            "fillers": 0,
+            "pitch_mean": 237.7,
+            "pitch_std": 52.6,
+            "energy_mean": 0.2370000034570694,
+            "energy_std": 0.2280000001192093,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.009162857197225094,
+                "good": 0.9801871180534363,
+                "normal": 0.010649971663951874
+            }
+        },
+        {
+            "start": 65.0,
+            "end": 70.0,
+            "text": "When you go to the gym, even on the days your mind says not to read. When you show up again and again and again, without drama, then you're building identity, discipline and momentum.",
+            "wpm": 408.0,
+            "fillers": 0,
+            "pitch_mean": 204.89,
+            "pitch_std": 56.42,
+            "energy_mean": 0.24899999797344208,
+            "energy_std": 0.20999999344348907,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.3385557532310486,
+                "good": 0.5461791753768921,
+                "normal": 0.11526506394147873
+            }
+        },
+        {
+            "start": 70.0,
+            "end": 72.77,
+            "text": "",
+            "wpm": 0.0,
+            "fillers": 0,
+            "pitch_mean": 198.11,
+            "pitch_std": 45.44,
+            "energy_mean": 0.3109999895095825,
+            "energy_std": 0.3059999942779541,
+            "speaking_quality": "bad",
+            "quality_confidence": {
+                "bad": 0.4640444219112396,
+                "good": 0.16103477776050568,
+                "normal": 0.3749207854270935
+            }
+        }
+    ]
+}
