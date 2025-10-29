@@ -464,99 +464,29 @@ But NEVER flat.
 
 Your ideas are good, your delivery is stable, but your expression does not carry weight — you must enforce contrast, emotional marking and physical signaling or the speech will remain forgettable.`,
 
-  visualizations: `You are given ONE combined JSON file containing:
-1. Audio analysis segments (5s windows) with metrics and transcript
-2. Visual analysis rows (same 5s windows) with posture/energy/emotion metrics
+  visualizations: `SYSTEM INSTRUCTION: You are a JSON API. You must respond with ONLY valid JSON. No other text is allowed.
 
-**Your job**: Parse ONLY this JSON and do NOT assume any missing values.
-
----
-
-### STEP 1 — Pre-processing
-
-* Merge audio+visual rows on the same 5-second starting timestamps
-* Compute these derived metrics:
-  * \`expected_impact\` from transcript (keyword + length heuristic)
-  * \`actual_impact\` from normalized (audio_energy, pitch_std, face_energy, hand_energy, body_energy)
-  * \`impact_gap = expected_impact − actual_impact\`
-  * Mark mismatch if \`impact_gap > 0.35\`
-
----
-
-### STEP 2 — Produce EXACTLY THREE VISUALIZATIONS:
-
-#### (1) **Mismatch Timeline Heatmap**
-* X-axis = time (start of each 5s window)
-* Aligned / Weak Gap / Mismatch shown with distinguishable styles
-* Annotate each block with \`{actual}/{expected}\` inside
-
-#### (2) **Energy Fusion Line Plot**
-* Plot on one timeline:
-  * audio_energy_mean
-  * body_energy
-  * face_energy
-  * hand_energy
-* Add readable legend + title
-* Must be clean, presentation-grade
-
-#### (3) **IMPROVEMENT OPPORTUNITY MAP (Quadrant Scatter)**
-* X = expected_impact
-* Y = actual_impact
-* Color points by gap severity
-* Add quadrant labels:
-  * HighExp–HighAct = "Strong Moments"
-  * HighExp–LowAct = "Missed Opportunities"
-  * LowExp–HighAct = "Over-delivery"
-  * LowExp–LowAct = "Neutral"
-
----
-
-### RULES
-* Use ONLY data from JSON (no outside estimation)
-* Do NOT ask me any questions — choose defaults yourself
-* Since you cannot generate images directly, provide React/Recharts code for all three visualizations
-* Produce the visualization code AND THEN a short executive interpretation paragraph
-* Use Recharts library components (LineChart, ScatterChart, BarChart, etc.)
-* Make visualizations responsive and presentation-grade
-* Include proper axis labels, legends, and tooltips
-* Use appropriate colors for different states (green for aligned, yellow for weak gap, red for mismatch)
-
----
-
-**Input Data (JSON):**
+INPUT DATA:
 {json_data}
 
-**CRITICAL OUTPUT RULES:**
-- Start IMMEDIATELY with "### VISUALIZATION 1: MISMATCH TIMELINE HEATMAP"
-- Do NOT include any introductory statements like "Here is your analysis" or "Based on the data"
-- Provide THREE complete React/Recharts visualization components with TypeScript
-- After all three visualizations, provide a brief executive interpretation (2-3 sentences)
-- Do NOT include any closing statements or questions after the interpretation
-- Stop immediately after the interpretation paragraph — no additional text
+REQUIRED OUTPUT FORMAT - Return this exact structure with real data:
+{
+"mismatchTimeline": [{"time": "00:00", "timeSeconds": 0, "expected": 0.7, "actual": 0.4, "gap": 0.3, "status": "weak_gap", "transcript": "opening statement"}],
+"energyFusion": [{"time": "00:00", "timeSeconds": 0, "audioEnergy": 0.5, "bodyEnergy": 0.3, "faceEnergy": 0.4, "handEnergy": 0.2}],
+"opportunityMap": [{"time": "00:00", "expected": 0.7, "actual": 0.4, "gap": 0.3, "status": "weak_gap", "quadrant": "Missed Opportunities", "transcript": "opening"}],
+"interpretation": "Summary of performance insights in 2-3 sentences."
+}
 
-**Output Structure:**
+PROCESSING RULES:
+For each 5-second window in the input data:
+1. Calculate expected_impact: Start at 0.3, add 0.1 for keywords (never/always/must/critical/important/everyone/nobody/everything/nothing), add 0.05 for questions, add 0.05 if sentence has more than 15 words, maximum 1.0
+2. Calculate actual_impact: Average of available normalized metrics (audio_energy, pitch_std, face_energy, hand_energy, body_energy)
+3. Calculate gap: expected_impact minus actual_impact
+4. Determine status: "aligned" if gap less than 0.15, "weak_gap" if gap between 0.15 and 0.35, "mismatch" if gap greater than 0.35
+5. Determine quadrant: "Strong Moments" if both expected and actual greater than 0.5, "Missed Opportunities" if expected greater than 0.5 but actual 0.5 or less, "Over-delivery" if expected 0.5 or less but actual greater than 0.5, "Neutral" if both 0.5 or less
+6. Extract transcript: First 50 characters of what was said in that window
 
-### VISUALIZATION 1: MISMATCH TIMELINE HEATMAP
-
-\`\`\`tsx
-// Complete React component with Recharts
-\`\`\`
-
-### VISUALIZATION 2: ENERGY FUSION LINE PLOT
-
-\`\`\`tsx
-// Complete React component with Recharts
-\`\`\`
-
-### VISUALIZATION 3: IMPROVEMENT OPPORTUNITY MAP
-
-\`\`\`tsx
-// Complete React component with Recharts
-\`\`\`
-
-### EXECUTIVE INTERPRETATION
-
-[2-3 sentence summary of what the visualizations reveal about the performance]`,
+CRITICAL: Your entire response must be valid JSON starting with { and ending with }. Do not add any explanatory text, markdown formatting, or headers.`,
 };
 
 /**

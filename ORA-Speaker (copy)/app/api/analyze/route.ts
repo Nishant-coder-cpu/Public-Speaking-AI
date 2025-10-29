@@ -391,6 +391,104 @@ export async function POST(request: NextRequest) {
         analysisType,
         feedbackLength: feedback.length,
       });
+
+      // 6.5. For visualizations, validate and clean JSON response
+      if (analysisType === 'visualizations') {
+        try {
+          let cleanedFeedback = feedback.trim();
+          
+          logger.info('Raw visualization response', {
+            length: feedback.length,
+            firstChars: feedback.substring(0, 100),
+            lastChars: feedback.substring(Math.max(0, feedback.length - 100)),
+          });
+          
+          // Strategy 1: Find JSON object boundaries
+          const firstBrace = cleanedFeedback.indexOf('{');
+          const lastBrace = cleanedFeedback.lastIndexOf('}');
+          
+          if (firstBrace === -1 || lastBrace === -1 || firstBrace >= lastBrace) {
+            throw new Error('No valid JSON object found in response');
+          }
+          
+          // Extract only the JSON part
+          cleanedFeedback = cleanedFeedback.substring(firstBrace, lastBrace + 1);
+          
+          // Strategy 2: Remove common markdown patterns
+          cleanedFeedback = cleanedFeedback.replace(/```json\s*/gi, '');
+          cleanedFeedback = cleanedFeedback.replace(/```\s*/gi, '');
+          cleanedFeedback = cleanedFeedback.replace(/^#+\s+.+$/gm, '');
+          
+          // Strategy 3: Remove any remaining non-JSON text at start/end
+          cleanedFeedback = cleanedFeedback.trim();
+          
+          // Ensure it starts with { and ends with }
+          if (!cleanedFeedback.startsWith('{') || !cleanedFeedback.endsWith('}')) {
+            throw new Error('Cleaned response does not start with { or end with }');
+          }
+          
+          logger.info('Cleaned visualization response', {
+            originalLength: feedback.length,
+            cleanedLength: cleanedFeedback.length,
+            startsWithBrace: cleanedFeedback.startsWith('{'),
+            endsWithBrace: cleanedFeedback.endsWith('}'),
+            preview: cleanedFeedback.substring(0, 150),
+          });
+          
+          // Try to parse as JSON to validate
+          const parsedData = JSON.parse(cleanedFeedback);
+          
+          // Validate required fields exist
+          if (!parsedData.mismatchTimeline || !parsedData.energyFusion || !parsedData.opportunityMap) {
+            throw new Error(`Missing required fields. Found: ${Object.keys(parsedData).join(', ')}`);
+          }
+          
+          // Validate arrays are not empty
+          if (!Array.isArray(parsedData.mismatchTimeline) || parsedData.mismatchTimeline.length === 0) {
+            throw new Error('mismatchTimeline must be a non-empty array');
+          }
+          if (!Array.isArray(parsedData.energyFusion) || parsedData.energyFusion.length === 0) {
+            throw new Error('energyFusion must be a non-empty array');
+          }
+          if (!Array.isArray(parsedData.opportunityMap) || parsedData.opportunityMap.length === 0) {
+            throw new Error('opportunityMap must be a non-empty array');
+          }
+          if (!parsedData.interpretation || typeof parsedData.interpretation !== 'string') {
+            throw new Error('interpretation must be a non-empty string');
+          }
+          
+          // Use the cleaned JSON string
+          feedback = cleanedFeedback;
+          
+          logger.info('Successfully validated visualization JSON', {
+            mismatchTimelineCount: parsedData.mismatchTimeline.length,
+            energyFusionCount: parsedData.energyFusion.length,
+            opportunityMapCount: parsedData.opportunityMap.length,
+            hasInterpretation: !!parsedData.interpretation,
+          });
+        } catch (jsonError) {
+          const errorMessage = jsonError instanceof Error ? jsonError.message : String(jsonError);
+          
+          logger.error('Failed to parse visualization JSON', {
+            error: errorMessage,
+            feedbackLength: feedback.length,
+            feedbackPreview: feedback.substring(0, 500),
+            feedbackEnd: feedback.substring(Math.max(0, feedback.length - 200)),
+          });
+          
+          // Return error response for invalid JSON with detailed info
+          return NextResponse.json(
+            {
+              success: false,
+              error: 'Invalid visualization data',
+              message: 'The AI generated invalid visualization data. Please try again.',
+              details: errorMessage,
+              preview: feedback.substring(0, 200),
+            },
+            { status: 500 }
+          );
+        }
+      }
     } catch (error) {
       logger.error('Failed to process analysis with custom prompt', {
         error: error instanceof Error ? error.message : String(error),

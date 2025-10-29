@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Save } from 'lucide-react';
 import { shimmer } from '@/lib/animations';
+import VisualizationCharts, { VisualizationData } from './VisualizationCharts';
 
 interface FeedbackCardProps {
   feedback: string;
@@ -19,6 +20,18 @@ export default function FeedbackCard({
   analysisType,
   analysisLabel,
 }: FeedbackCardProps) {
+  // Check if this is visualization data (JSON format)
+  const isVisualization = analysisType === 'visualizations';
+  let visualizationData: VisualizationData | null = null;
+
+  if (isVisualization) {
+    try {
+      visualizationData = JSON.parse(feedback);
+    } catch (error) {
+      console.error('Failed to parse visualization data:', error);
+    }
+  }
+
   // Parse feedback into sections for structured rendering
   const parseFeedback = (text: string) => {
     const lines = text.split('\n');
@@ -54,7 +67,7 @@ export default function FeedbackCard({
     return sections.length > 0 ? sections : [{ title: '', content: [text] }];
   };
 
-  const sections = parseFeedback(feedback);
+  const sections = !isVisualization ? parseFeedback(feedback) : [];
 
   if (isLoading) {
     return (
@@ -184,9 +197,12 @@ export default function FeedbackCard({
             </h3>
           </motion.div>
 
-          {/* Feedback sections */}
-          <div className="space-y-8">
-            {sections.map((section, sectionIndex) => (
+          {/* Visualization charts or feedback sections */}
+          {isVisualization && visualizationData ? (
+            <VisualizationCharts data={visualizationData} />
+          ) : (
+            <div className="space-y-8">
+              {sections.map((section, sectionIndex) => (
               <motion.div
                 key={sectionIndex}
                 initial={{ opacity: 0, x: -20 }}
@@ -243,7 +259,8 @@ export default function FeedbackCard({
                 </div>
               </motion.div>
             ))}
-          </div>
+            </div>
+          )}
 
           {/* Save Button with enhanced styling */}
           {onSave && (

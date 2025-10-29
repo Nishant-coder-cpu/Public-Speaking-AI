@@ -157,7 +157,21 @@ Be specific, reference the data points, and maintain an encouraging tone. Focus 
     }
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: this.model });
+      // Check if this is a visualization request (prompt contains JSON output instructions)
+      const isVisualizationRequest = customPrompt.includes('mismatchTimeline') &&
+        customPrompt.includes('energyFusion') &&
+        customPrompt.includes('opportunityMap');
+
+      // For visualization requests, use JSON response mode
+      const modelConfig: any = { model: this.model };
+      if (isVisualizationRequest) {
+        modelConfig.generationConfig = {
+          responseMimeType: 'application/json',
+        };
+        this.logger.info('Using JSON response mode for visualization request');
+      }
+
+      const model = this.genAI.getGenerativeModel(modelConfig);
 
       // Use the custom prompt directly (it should already have JSON data injected)
       const result = await model.generateContent(customPrompt);
