@@ -1,0 +1,188 @@
+{
+    "overall_speaking_quality": "good",
+    "overall_confidence_scores": {
+        "bad": 0.00027634657453745604,
+        "good": 0.9996001124382019,
+        "normal": 0.00012355447688605636
+    },
+    "overall_transcript": "It's very common among highly creative people, both artists and scientists. And I'd like to give it a name. Slow motion multitasking. Slow motion multitasking feels like a counterintuitive idea. What I'm describing here is having multiple projects on the go at the same time and you move backwards and forwards between topics as the mood takes you or as the situation demands. But the reason it seems counterintuitive is because we're used to lapsing into multitasking out of desperation. We're in a hurry. We want to do everything at once. If we were willing to slow multitasking down, we might find that it works quite brilliantly.",
+    "overall_metrics": {
+        "duration_sec": 47.02,
+        "average_wpm": 136.54,
+        "total_fillers": 2,
+        "average_pitch": 225.67,
+        "average_energy": 0.36
+    },
+    "segments": [
+        {
+            "start": 0.0,
+            "end": 5.0,
+            "text": "It's very common among highly creative people,",
+            "wpm": 84.0,
+            "fillers": 0,
+            "pitch_mean": 195.24,
+            "pitch_std": 32.67,
+            "energy_mean": 0.34599998593330383,
+            "energy_std": 0.2669999897480011,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.0007177488878369331,
+                "good": 0.9982863068580627,
+                "normal": 0.000995974987745285
+            }
+        },
+        {
+            "start": 5.0,
+            "end": 10.0,
+            "text": "both artists and scientists. And I'd like to give it a name. Slow motion multitasking.",
+            "wpm": 180.0,
+            "fillers": 1,
+            "pitch_mean": 226.18,
+            "pitch_std": 52.23,
+            "energy_mean": 0.33799999952316284,
+            "energy_std": 0.2879999876022339,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.0004960020305588841,
+                "good": 0.9984704852104187,
+                "normal": 0.001033497741445899
+            }
+        },
+        {
+            "start": 10.0,
+            "end": 15.0,
+            "text": "Slow motion multitasking feels like a counterintuitive idea.",
+            "wpm": 96.0,
+            "fillers": 1,
+            "pitch_mean": 259.76,
+            "pitch_std": 69.62,
+            "energy_mean": 0.28700000047683716,
+            "energy_std": 0.2750000059604645,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.00028872545226477087,
+                "good": 0.9994267225265503,
+                "normal": 0.0002846131974365562
+            }
+        },
+        {
+            "start": 15.0,
+            "end": 20.0,
+            "text": "What I'm describing here is having multiple projects on the go",
+            "wpm": 132.0,
+            "fillers": 0,
+            "pitch_mean": 246.73,
+            "pitch_std": 62.27,
+            "energy_mean": 0.4269999861717224,
+            "energy_std": 0.23399999737739563,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.0005294762668199837,
+                "good": 0.9993701577186584,
+                "normal": 0.0001004215664579533
+            }
+        },
+        {
+            "start": 20.0,
+            "end": 25.0,
+            "text": "at the same time and you move backwards and forwards",
+            "wpm": 120.0,
+            "fillers": 0,
+            "pitch_mean": 242.85,
+            "pitch_std": 37.64,
+            "energy_mean": 0.4490000009536743,
+            "energy_std": 0.23800000548362732,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.0007476259488612413,
+                "good": 0.9990302324295044,
+                "normal": 0.0002221663889940828
+            }
+        },
+        {
+            "start": 25.0,
+            "end": 30.0,
+            "text": "between topics as the mood takes you or as the situation demands. But the reason it seems counterintuitive",
+            "wpm": 216.0,
+            "fillers": 0,
+            "pitch_mean": 236.92,
+            "pitch_std": 71.15,
+            "energy_mean": 0.37400001287460327,
+            "energy_std": 0.23600000143051147,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.0012401307467371225,
+                "good": 0.9982884526252747,
+                "normal": 0.0004713682865258306
+            }
+        },
+        {
+            "start": 30.0,
+            "end": 35.0,
+            "text": "is because we're used to lapsing into multitasking out of desperation.",
+            "wpm": 132.0,
+            "fillers": 0,
+            "pitch_mean": 231.8,
+            "pitch_std": 57.91,
+            "energy_mean": 0.4569999873638153,
+            "energy_std": 0.21799999475479126,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.0007027140236459672,
+                "good": 0.9991430044174194,
+                "normal": 0.00015431171050295234
+            }
+        },
+        {
+            "start": 35.0,
+            "end": 40.0,
+            "text": "We're in a hurry. We want to do everything at once.",
+            "wpm": 132.0,
+            "fillers": 0,
+            "pitch_mean": 271.39,
+            "pitch_std": 50.07,
+            "energy_mean": 0.3009999990463257,
+            "energy_std": 0.26499998569488525,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.00046035333070904016,
+                "good": 0.9992824196815491,
+                "normal": 0.00025726755848154426
+            }
+        },
+        {
+            "start": 40.0,
+            "end": 45.0,
+            "text": "If we were willing to slow multitasking down,",
+            "wpm": 96.0,
+            "fillers": 0,
+            "pitch_mean": 205.49,
+            "pitch_std": 36.87,
+            "energy_mean": 0.3709999918937683,
+            "energy_std": 0.29100000858306885,
+            "speaking_quality": "good",
+            "quality_confidence": {
+                "bad": 0.0047430619597435,
+                "good": 0.9831336140632629,
+                "normal": 0.0121233481913805
+            }
+        },
+        {
+            "start": 45.0,
+            "end": 47.02,
+            "text": "we might find that it works quite brilliantly.",
+            "wpm": 237.78,
+            "fillers": 0,
+            "pitch_mean": 140.36,
+            "pitch_std": 45.21,
+            "energy_mean": 0.24899999797344208,
+            "energy_std": 0.2980000078678131,
+            "speaking_quality": "bad",
+            "quality_confidence": {
+                "bad": 0.8022767901420593,
+                "good": 0.04043014347553253,
+                "normal": 0.15729305148124695
+            }
+        }
+    ]
+}
