@@ -180,33 +180,6 @@ curl -X 'POST'   'http://127.0.0.1:9000/analyze/'   -H 'accept: application/json
 
 ---
 
-## 🌐 Integration with Frontend (Vercel)
-
-If your **Next.js** frontend is deployed (e.g., on Vercel) but the APIs run locally:
-
-### Using **ngrok**:
-```bash
-fusion-env\Scripts\activate
-ngrok http 9000
-```
-
-Copy the forwarding URL (e.g. `https://abcd1234.ngrok-free.app`)  
-and update your frontend `.env.local`:
-
-```env
-NEXT_PUBLIC_API_BASE_URL=https://abcd1234.ngrok-free.app
-```
-
-Your frontend can now call:
-```js
-fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/analyze/`, {
-  method: 'POST',
-  body: formData
-});
-```
-
----
-
 ## 📁 Folder Structure
 
 ```
@@ -224,6 +197,8 @@ Public Speaking AI/
 │
 ├── Fusion-api/
 │   ├── fusion_main.py
+│
+├── ORA-Speaker(Copy)
 │
 ├── fusion-env/
 ├── venv/
